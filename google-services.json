@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "154377542925",
+    "project_id": "text-hiding",
+    "storage_bucket": "text-hiding.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154377542925:android:03612c4c946a43d636a444",
+        "android_client_info": {
+          "package_name": "com.example.textencryption"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOY31N7WptmGSqdHOuCukonkggCgo31mc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
