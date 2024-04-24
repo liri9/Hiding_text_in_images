@@ -1,17 +1,19 @@
 package com.example.textencryption;
 
+import android.graphics.Bitmap;
+
 public class Image {
-    private String imageUrl;
+    private Bitmap bitmap;
     private String userName;
 
     // Constructor, getters, and setters
-    public Image(String imageUrl, String userName) {
-        this.imageUrl = imageUrl;
+    public Image(Bitmap bitmap, String userName) {
+        this.bitmap = bitmap;
         this.userName = userName;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public Bitmap getImageUrl() {
+        return bitmap;
     }
 
     public String getUserName() {

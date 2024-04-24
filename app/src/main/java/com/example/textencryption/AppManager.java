@@ -1,9 +1,13 @@
 package com.example.textencryption;
 
+import android.graphics.Bitmap;
+
+import java.util.ArrayList;
+
 public class AppManager {
     private static AppManager appManager = null;
     private User loggedIn;
-
+    private static ArrayList<Image> allImages = new ArrayList<>();
 
 
     private AppManager() {
@@ -27,6 +31,12 @@ public class AppManager {
         this.loggedIn = loggedIn;
     }
 
+    public ArrayList<Image> getAllImages() {
+        return allImages;
+    }
 
+    public void addImage(Image image) {
+        allImages.add(image);
+    }
 
 }

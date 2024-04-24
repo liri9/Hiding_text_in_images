@@ -7,5 +7,6 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         AppManager.init();
+        MySP.init(this);
     }
 }

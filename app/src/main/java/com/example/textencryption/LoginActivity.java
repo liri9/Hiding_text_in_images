@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         initViews();
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//        Log.d("firebaseUser",firebaseUser.getDisplayName());
         if (firebaseUser == null) {
             login();
         } else {
@@ -77,8 +78,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        register_userName.findViewById(R.id.register_userName);
-        register_btn.findViewById(R.id.register_btn);
+        register_userName =findViewById(R.id.register_userName);
+        register_btn=findViewById(R.id.register_btn);
     }
 
     private void checkIfUserInMyServer() {
@@ -86,13 +87,17 @@ public class LoginActivity extends AppCompatActivity {
         assert firebaseUser != null;
         MyRTFB.getUserData(firebaseUser.getUid(), user -> {
             if (user == null) {
-                Log.d("checkuser - null", "hi");
-                //  registerUser();
+                Log.d("checkuser", "null");
+                  registerUser();
             } else if (user.getUserName() == null || user.getUserName() == null || user.getUserName().isEmpty() || user.getUserName().isEmpty()) {
-                //  registerUser();
+                Log.d("checkuser", "elif");
+
+                //registerUser();
+
             } else {
                 Toast.makeText(LoginActivity.this, "Welcome back " + user.getUserName(), Toast.LENGTH_LONG).show();
                 AppManager.getInstance().setLoggedIn(user);
+                //registerUser();
                 Log.d(AppManager.getInstance().getLoggedIn().getUserName(),"app manager" );
                 Log.d(user.getUserName(),"bo app manager" );
                 openApp();

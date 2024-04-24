@@ -2,11 +2,13 @@ package com.example.textencryption;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -22,6 +24,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class uploadActivity extends AppCompatActivity {
@@ -82,22 +87,38 @@ public class uploadActivity extends AppCompatActivity {
             Bitmap originalBitmap = BitmapFactory.decodeStream(imageStream);
             String textToEncode = edt_text.getText().toString();
             Bitmap encodedBitmap = Steganography.encode(originalBitmap, textToEncode);
-            imageView.setImageBitmap(encodedBitmap); // Show the encoded image
+            String directoryName = "images";
+            String fileName = "encoded_image_" + System.currentTimeMillis() + ".png";
+            File directory = new File(this.getFilesDir(), directoryName);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            File imagePath = new File(directory, fileName);
 
-            MyRTFB.saveNewImage(imageUri, String.valueOf(imageView.getId()), new MyRTFB.CB_Image() {
-                @Override
-                public void onData(String imageUrl) {
-                    Toast.makeText(uploadActivity.this, "Image uploaded and saved successfully", Toast.LENGTH_LONG).show();
+            // Save the bitmap to a file
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(imagePath);
+                encodedBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);  // Bitmap quality (100 means no compression)
+                fos.flush();
+                Log.d("ImageHandler", "Image saved to " + imagePath.getAbsolutePath());
+            } catch (IOException e) {
+                Log.e("ImageHandler", "Error saving image", e);
+            } finally {
+                try {
+                    if (fos != null) {
+                        fos.close();
+                    }
+                } catch (IOException e) {
+                    Log.e("ImageHandler", "Error closing FileOutputStream", e);
                 }
+            }
 
-                @Override
-                public void onError(String error) {
-                    Toast.makeText(uploadActivity.this, "Error: " + error, Toast.LENGTH_LONG).show();
-                }
-            });
+            Log.d("decode",Steganography.decode(encodedBitmap));
+            int count = MySP.getInstance().readInt("count",0);
+            MySP.getInstance().saveInt("count",++count);
+            MySP.getInstance().putString("image_path"+count, imagePath.getAbsolutePath());
 
-          //  String decodedMessage = Steganography.decode(encodedBitmap);
-            //Toast.makeText(this, "Decoded Message: " + decodedMessage, Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(this, "Error processing image", Toast.LENGTH_SHORT).show();
         }
